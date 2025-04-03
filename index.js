@@ -141,7 +141,16 @@ async function addToCart() {
       body: JSON.stringify(itemData),
     });
 
-    if (cartResponse.ok) {
+    userId = cartResponse.Id;
+
+    const dbResponse = await fetch(
+      "http://localhost:4000/cart/add-to-database",
+      {
+        method: "GET",
+        credentials: "include",
+      }
+    );
+    if (dbResponse.ok) {
       count++;
       alert("Item added to cart successfully.");
       document.querySelector(".count").innerText = count;
@@ -152,4 +161,64 @@ async function addToCart() {
     console.error("Error:", error);
     alert("Something went wrong. Please try again.");
   }
+}
+
+async function displayCartItems() {
+  let userId;
+  try {
+    const response = await fetch("http://localhost:4000/user/get-userId", {
+      method: "GET",
+      credentials: "include",
+    });
+    if(response.ok){
+      userId = response.Id;
+      console.log(userId);
+    }
+  } catch (error) {
+    alert(error);
+    console.log(error);
+  }
+  try {
+    const response = await fetch(
+      `http://localhost:4000/cart/get-cart-item/${userId}`,
+      {
+        method: "GET",
+        headers: {
+          Accept: "application/json",
+        },
+        credentials: "include",
+      }
+    );
+
+    if (response.ok) {
+      const cartItems = await response.json();
+      const cartContainer = document.querySelector(".cart-items");
+
+      if (cartContainer) {
+        cartContainer.innerHTML = ""; // Clear existing items
+
+        cartItems.forEach((item) => {
+          const itemElement = document.createElement("div");
+          itemElement.className = "cart-item";
+          itemElement.innerHTML = `
+            <h5>${item.title}</h5>
+            <p>${item.text}</p>
+            <p>Price: ${item.price}</p>
+          `;
+          cartContainer.appendChild(itemElement);
+        });
+      }
+    } else {
+      alert("Failed to fetch cart items.");
+    }
+  } catch (error) {
+    console.error("Error:", error);
+    alert("Something went wrong. Please try again.");
+  }
+}
+
+const cartBtn = document.getElementById("cartBtn");
+
+function redirectUser() {
+  window.location.href = "http://127.0.0.1:5500/cart.html";
 }
