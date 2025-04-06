@@ -239,44 +239,44 @@ function redirectUser() {
   window.location.href = "http://127.0.0.1:5500/cart.html";
 }
 
-async function cartLength() {
-  try {
-    const response = await fetch("http://localhost:4000/user/get-userId", {
-      method: "GET",
-      credentials: "include",
-    });
-    if (response.ok) {
-      userId = await response.json();
-      console.log(userId);
-    }
-  } catch (error) {
-    alert(error);
-    console.log(error);
-  }
-  try {
-    const response = await fetch(
-      `http://localhost:4000/cart/get-cart-item/${userId.Id}`,
-      {
-        method: "GET",
-        headers: {
-          Accept: "application/json",
-        },
-        credentials: "include",
-      }
-    );
-    const cartLengthElem = document.querySelector(".count");
-    if (response.ok) {
-      const data = await response.json();
-      const cartItems = data.cartItems || [];
-      cartLengthElem.innerText = cartItems.length;
-    } else {
-      cartLengthElem.innerText = "0";
-    }
-  } catch (error) {
-    console.error("Error:", error);
-    alert("Something went wrong. Please try again.");
-  }
-}
+// async function cartLength() {
+//   try {
+//     const response = await fetch("http://localhost:4000/user/get-userId", {
+//       method: "GET",
+//       credentials: "include",
+//     });
+//     if (response.ok) {
+//       userId = await response.json();
+//       console.log(userId);
+//     }
+//   } catch (error) {
+//     alert(error);
+//     console.log(error);
+//   }
+//   try {
+//     const response = await fetch(
+//       `http://localhost:4000/cart/get-cart-item/${userId.Id}`,
+//       {
+//         method: "GET",
+//         headers: {
+//           Accept: "application/json",
+//         },
+//         credentials: "include",
+//       }
+//     );
+//     const cartLengthElem = document.querySelector(".count");
+//     if (response.ok) {
+//       const data = await response.json();
+//       const cartItems = data.cartItems || [];
+//       cartLengthElem.innerText = cartItems.length;
+//     } else {
+//       cartLengthElem.innerText = "0";
+//     }
+//   } catch (error) {
+//     console.error("Error:", error);
+//     alert("Something went wrong. Please try again.");
+//   }
+// }
 
 async function removeFromCart(productId, button) {
   try {
