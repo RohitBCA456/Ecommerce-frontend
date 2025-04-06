@@ -53,7 +53,11 @@
               <a class="nav-link active" href="#">Home</a>
             </li>
             <li class="nav-item"><a class="nav-link" href="#">Orders</a></li>
-            <button type="button" class="btn btn-primary position-relative cartBtn" onclick="redirectUser();">
+            <button
+              type="button"
+              class="btn btn-primary position-relative cartBtn"
+              onclick="redirectUser();"
+            >
               Cart
               <span
                 class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
@@ -75,7 +79,16 @@
               </a>
               <ul class="dropdown-menu">
                 <li><a class="dropdown-item" href="#">Account details</a></li>
-                <li><a class="dropdown-item" href="#">Change password</a></li>
+                <li>
+                  <a
+                    class="dropdown-item"
+                    id="change-password"
+                    href="#"
+                    data-bs-toggle="modal"
+                    data-bs-target="#changePasswordModal"
+                    >Change password</a
+                  >
+                </li>
                 <li>
                   <a class="dropdown-item" href="#">Change Shipping Address</a>
                 </li>
@@ -126,6 +139,70 @@
         </div>
       </div>
     </nav>
+    <!-- Change Password Modal -->
+    <div
+      class="modal fade"
+      id="changePasswordModal"
+      tabindex="-1"
+      aria-labelledby="changePasswordLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <form id="changePasswordForm">
+            <div class="modal-header">
+              <h5 class="modal-title" id="changePasswordLabel">
+                Change Password
+              </h5>
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+
+            <div class="modal-body">
+              <div class="mb-3">
+                <label for="currentPassword" class="form-label"
+                  >Current Password</label
+                >
+                <input
+                  type="password"
+                  class="form-control"
+                  id="currentPassword"
+                  name="currentPassword"
+                  required
+                />
+              </div>
+              <div class="mb-3">
+                <label for="newPassword" class="form-label">New Password</label>
+                <input
+                  type="password"
+                  class="form-control"
+                  id="newPassword"
+                  name="newPassword"
+                  required
+                />
+              </div>
+            </div>
+
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-secondary"
+                data-bs-dismiss="modal"
+              >
+                Cancel
+              </button>
+              <button type="submit" class="btn btn-primary">
+                Change Password
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
 
     <!-- Signup Modal -->
     <div
@@ -348,7 +425,9 @@
                 impression.
               </p>
               <p class="fw-bold item-price">Price: ₹2,499</p>
-              <button onclick="addToCart(this);" class="btn btn-primary">Add to Cart</button>
+              <button onclick="addToCart(this);" class="btn btn-primary">
+                Add to Cart
+              </button>
               <a href="#" class="btn btn-success">Buy Now</a>
             </div>
           </div>
@@ -368,7 +447,9 @@
                 any occasion.
               </p>
               <p class="fw-bold item-price">Price: ₹3,999</p>
-              <button onclick="addToCart(this);" class="btn btn-primary">Add to Cart</button>
+              <button onclick="addToCart(this);" class="btn btn-primary">
+                Add to Cart
+              </button>
               <a href="#" class="btn btn-success">Buy Now</a>
             </div>
           </div>
@@ -388,7 +469,9 @@
                 flawless look.
               </p>
               <p class="fw-bold item-price">Price: ₹1,799</p>
-              <button onclick="addToCart(this);" class="btn btn-primary">Add to Cart</button>
+              <button onclick="addToCart(this);" class="btn btn-primary">
+                Add to Cart
+              </button>
               <a href="#" class="btn btn-success">Buy Now</a>
             </div>
           </div>
@@ -411,7 +494,9 @@
                 Delicious handmade chocolates with a rich and creamy texture.
               </p>
               <p class="fw-bold item-price">Price: ₹1,499</p>
-              <button onclick="addToCart(this);" class="btn btn-primary">Add to Cart</button>
+              <button onclick="addToCart(this);" class="btn btn-primary">
+                Add to Cart
+              </button>
               <a href="#" class="btn btn-success">Buy Now</a>
             </div>
           </div>
@@ -431,7 +516,9 @@
                 healthier lifestyle.
               </p>
               <p class="fw-bold item-price">Price: ₹999</p>
-              <button onclick="addToCart(this);" class="btn btn-primary">Add to Cart</button>
+              <button onclick="addToCart(this);" class="btn btn-primary">
+                Add to Cart
+              </button>
               <a href="#" class="btn btn-success">Buy Now</a>
             </div>
           </div>
@@ -451,7 +538,9 @@
                 experience.
               </p>
               <p class="fw-bold item-price">Price: ₹599</p>
-              <button onclick="addToCart(this);" class="btn btn-primary">Add to Cart</button>
+              <button onclick="addToCart(this);" class="btn btn-primary">
+                Add to Cart
+              </button>
               <a href="#" class="btn btn-success">Buy Now</a>
             </div>
           </div>
@@ -474,7 +563,9 @@
                 Experience the finest selection of Matcha green tea.
               </p>
               <p class="fw-bold item-price">Price: ₹1,249</p>
-              <button onclick="addToCart(this);" class="btn btn-primary">Add to Cart</button>
+              <button onclick="addToCart(this);" class="btn btn-primary">
+                Add to Cart
+              </button>
               <a href="#" class="btn btn-success">Buy Now</a>
             </div>
           </div>
@@ -493,7 +584,9 @@
                 Timeless leather shoes crafted for elegance and comfort.
               </p>
               <p class="fw-bold item-price">Price: ₹5,499</p>
-              <button onclick="addToCart(this);" class="btn btn-primary">Add to Cart</button>
+              <button onclick="addToCart(this);" class="btn btn-primary">
+                Add to Cart
+              </button>
               <a href="#" class="btn btn-success">Buy Now</a>
             </div>
           </div>
@@ -513,7 +606,9 @@
                 taste.
               </p>
               <p class="fw-bold item-price">Price: ₹8,999</p>
-              <button onclick="addToCart(this);" class="btn btn-primary">Add to Cart</button>
+              <button onclick="addToCart(this);" class="btn btn-primary">
+                Add to Cart
+              </button>
               <a href="#" class="btn btn-success">Buy Now</a>
             </div>
           </div>

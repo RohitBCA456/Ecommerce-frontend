@@ -215,7 +215,7 @@ async function displayCartItems() {
     <p class="card-text text-primary fw-bold">${item.price}</p>
     <div class="mt-auto d-flex justify-content-between">
       <button class="btn btn-success btn-sm buy-now-btn" data-id="${item._id}">Buy Now</button>
-      <button class="btn btn-danger btn-sm remove-btn" data-id="${item._id}">Remove</button>
+      <button class="btn btn-danger btn-sm remove-btn" onclick="removeFromCart('${item._id}', this)">Remove</button>
     </div>
   </div>
 </div>
@@ -277,3 +277,73 @@ async function cartLength() {
     alert("Something went wrong. Please try again.");
   }
 }
+
+async function removeFromCart(productId, button) {
+  try {
+    const response = await fetch(
+      `http://localhost:4000/cart/delete/${productId}`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        credentials: "include",
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error("Failed to remove item from cart.");
+    }
+
+    // Optionally remove the card from DOM
+    const card = button.closest(".card");
+    if (card) card.remove();
+
+    console.log("Item removed successfully.");
+  } catch (error) {
+    console.error("Error removing item:", error.message);
+  }
+}
+
+document
+  .getElementById("changePasswordForm")
+  .addEventListener("submit", async function (e) {
+    e.preventDefault();
+
+    const form = e.target;
+    const formData = new FormData(form);
+    const data = Object.fromEntries(formData.entries());
+
+    try {
+      const response = await fetch(
+        "http://localhost:4000/user/change-password",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+          },
+          credentials: "include",
+          body: JSON.stringify(data),
+        }
+      );
+
+      if (response.ok) {
+        alert("Password changed successfully.");
+        form.reset();
+
+        // Close modal
+        const modal = bootstrap.Modal.getInstance(
+          document.getElementById("changePasswordModal")
+        );
+        modal.hide();
+      } else {
+        const err = await response.json();
+        alert(err.message || "Failed to change password.");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      alert("Something went wrong.");
+    }
+  });
