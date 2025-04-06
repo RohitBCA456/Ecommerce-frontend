@@ -1,9 +1,9 @@
+let userId;
 document.addEventListener("DOMContentLoaded", () => {
   const signupForm = document.getElementById("signup-form");
   const loginForm = document.getElementById("login-form");
   const loginButton = document.getElementById("mainLoginBtn");
   const loginModal = new bootstrap.Modal(document.getElementById("loginModal"));
-
   // Function to update UI based on login state
   const updateLoginState = () => {
     const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
@@ -122,13 +122,18 @@ document.addEventListener("DOMContentLoaded", () => {
   updateLoginState();
 });
 
-async function addToCart() {
-  let count = parseInt(document.querySelector(".count")?.innerText) || 0;
-  const title = document.querySelector(".card-title")?.innerText;
-  const text = document.querySelector(".card-text")?.innerText;
-  const price = document.querySelector(".item-price")?.innerText;
+async function addToCart(button) {
+  const card = button.closest(".card"); // Get the card related to the clicked button
 
-  const itemData = { title, text, price };
+  const title = card.querySelector(".card-title")?.innerText;
+  const text = card.querySelector(".card-text")?.innerText;
+  const price =
+    card.querySelector(".item-price")?.innerText ||
+    card.querySelector(".text-primary")?.innerText;
+  const image = card.querySelector(".card-img-top")?.src;
+
+  const itemData = { title, text, price, image };
+  let count = parseInt(document.querySelector(".count")?.innerText) || 0;
 
   try {
     const cartResponse = await fetch("http://localhost:4000/user/add-to-cart", {
@@ -141,8 +146,6 @@ async function addToCart() {
       body: JSON.stringify(itemData),
     });
 
-    userId = cartResponse.Id;
-
     const dbResponse = await fetch(
       "http://localhost:4000/cart/add-to-database",
       {
@@ -150,6 +153,7 @@ async function addToCart() {
         credentials: "include",
       }
     );
+
     if (dbResponse.ok) {
       count++;
       alert("Item added to cart successfully.");
@@ -164,14 +168,13 @@ async function addToCart() {
 }
 
 async function displayCartItems() {
-  let userId;
   try {
     const response = await fetch("http://localhost:4000/user/get-userId", {
       method: "GET",
       credentials: "include",
     });
-    if(response.ok){
-      userId = response.Id;
+    if (response.ok) {
+      userId = await response.json();
       console.log(userId);
     }
   } catch (error) {
@@ -180,7 +183,7 @@ async function displayCartItems() {
   }
   try {
     const response = await fetch(
-      `http://localhost:4000/cart/get-cart-item/${userId}`,
+      `http://localhost:4000/cart/get-cart-item/${userId.Id}`,
       {
         method: "GET",
         headers: {
@@ -191,20 +194,33 @@ async function displayCartItems() {
     );
 
     if (response.ok) {
-      const cartItems = await response.json();
+      const data = await response.json();
+      console.log(data); // Should be { cartItems: [...] }
+
+      const cartItems = data.cartItems;
       const cartContainer = document.querySelector(".cart-items");
 
       if (cartContainer) {
-        cartContainer.innerHTML = ""; // Clear existing items
+        cartContainer.innerHTML = "";
 
         cartItems.forEach((item) => {
           const itemElement = document.createElement("div");
-          itemElement.className = "cart-item";
+          itemElement.className = "col-md-6 col-lg-4 mb-4"; // Responsive columns
           itemElement.innerHTML = `
-            <h5>${item.title}</h5>
-            <p>${item.text}</p>
-            <p>Price: ${item.price}</p>
-          `;
+      <div class="card h-100 shadow rounded-4 border-0">
+  <img src="${item.image}" class="card-img-top rounded-top" alt="${item.productName}" style="height: 250px; object-fit: cover;">
+  <div class="card-body d-flex flex-column">
+    <h5 class="card-title">${item.productName}</h5>
+    <p class="card-text">${item.text}</p> <!-- ADDED: product description -->
+    <p class="card-text text-primary fw-bold">${item.price}</p>
+    <div class="mt-auto d-flex justify-content-between">
+      <button class="btn btn-success btn-sm buy-now-btn" data-id="${item._id}">Buy Now</button>
+      <button class="btn btn-danger btn-sm remove-btn" data-id="${item._id}">Remove</button>
+    </div>
+  </div>
+</div>
+
+    `;
           cartContainer.appendChild(itemElement);
         });
       }
@@ -221,4 +237,43 @@ const cartBtn = document.getElementById("cartBtn");
 
 function redirectUser() {
   window.location.href = "http://127.0.0.1:5500/cart.html";
+}
+
+async function cartLength() {
+  try {
+    const response = await fetch("http://localhost:4000/user/get-userId", {
+      method: "GET",
+      credentials: "include",
+    });
+    if (response.ok) {
+      userId = await response.json();
+      console.log(userId);
+    }
+  } catch (error) {
+    alert(error);
+    console.log(error);
+  }
+  try {
+    const response = await fetch(
+      `http://localhost:4000/cart/get-cart-item/${userId.Id}`,
+      {
+        method: "GET",
+        headers: {
+          Accept: "application/json",
+        },
+        credentials: "include",
+      }
+    );
+    const cartLengthElem = document.querySelector(".count");
+    if (response.ok) {
+      const data = await response.json();
+      const cartItems = data.cartItems || [];
+      cartLengthElem.innerText = cartItems.length;
+    } else {
+      cartLengthElem.innerText = "0";
+    }
+  } catch (error) {
+    console.error("Error:", error);
+    alert("Something went wrong. Please try again.");
+  }
 }

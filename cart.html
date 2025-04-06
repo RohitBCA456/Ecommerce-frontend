@@ -4,15 +4,67 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Shopping Cart</title>
+
     <!-- Bootstrap CSS -->
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
       rel="stylesheet"
     />
+
+    <style>
+      /* Attractive heading */
+      .cart-title {
+        font-size: 2.5rem;
+        font-weight: 700;
+        color: #2b2d42;
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+      }
+
+      /* Card hover effect */
+      .card {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+      }
+
+      .card:hover {
+        transform: scale(1.03);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+      }
+
+      /* Button style + hover */
+      .btn {
+        transition: all 0.2s ease-in-out;
+        border-radius: 20px;
+        font-weight: 500;
+      }
+
+      .btn-success:hover {
+        background-color: #218838;
+        transform: translateY(-2px);
+      }
+
+      .btn-danger:hover {
+        background-color: #c82333;
+        transform: translateY(-2px);
+      }
+
+      /* Make text inside card readable */
+      .card-text {
+        font-size: 1rem;
+      }
+    </style>
   </head>
+
   <body onload="displayCartItems();">
-    <div class="cart-items mt-5"></div>
+    <div class="container my-5">
+      <h2 class="text-center mb-4 cart-title">🛒 Your Shopping Cart</h2>
+      <div class="row cart-items">
+        <!-- Cards will be injected here -->
+      </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Your JS -->
+    <script src="index.js"></script>
   </body>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="index.js"></script>
 </html>
